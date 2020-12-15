@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlataformGeneration : MonoBehaviour
 {
     public GameObject Plataform;
+    
     public Transform Point;
     public float Distance;
     private float PlataformWidth;
