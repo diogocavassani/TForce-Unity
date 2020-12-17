@@ -6,6 +6,10 @@ public class Bullet : MonoBehaviour
 {
     public float Speed;
 
+    void Start() 
+    {
+        Destroy(gameObject, 0.5f);
+    }
     void Update()
     {
         transform.Translate(Vector3.right * Speed * Time.deltaTime);
