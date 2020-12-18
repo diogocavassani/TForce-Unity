@@ -35,6 +35,8 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Bullet")
         {
+            GetComponent<CircleCollider2D>().enabled = false;
+            GameController.current.AddScore(10);
             animator.SetTrigger("destroy");
             Destroy(gameObject, 1f);
         }
