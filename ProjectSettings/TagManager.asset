@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
-  - Bullet
-  - Enemy
-  - Coin
+  - ground
+  - bullet
+  - enemy
+  - coin
   layers:
   - Default
   - TransparentFX
@@ -17,7 +17,7 @@ TagManager:
   - UI
   - 
   - 
-  - Ground
+  - ground
   - 
   - 
   - 

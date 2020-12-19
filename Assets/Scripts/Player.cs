@@ -7,49 +7,68 @@ public class Player : MonoBehaviour
     public float Speed;
     public float JumpForce;
     public GameObject bullet;
-    public Transform FirePoint;
+    public Transform firePoint;
+
     public GameObject smoke;
-    private bool isJump;
+
+    private bool isJumping;
     private Rigidbody2D rig;
 
     void Start()
     {
-       rig = GetComponent<Rigidbody2D>(); 
+        rig = GetComponent<Rigidbody2D>();
     }
-
 
     void FixedUpdate()
     {
+        //Logica para movimentacao do player
         rig.velocity = new Vector2(Speed * Time.deltaTime, rig.velocity.y);
-        
-        if (Input.GetKey(KeyCode.Space) && !isJump)
+
+        if(Input.GetKey(KeyCode.Space) && !isJumping)
         {
             rig.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
-            isJump = true;
-            smoke.SetActive(true);
+            isJumping = true;
+            smoke.SetActive(true); // Ativar fumaca do jetpack
         }
 
-        if (Input.GetKey(KeyCode.X))
+        if(Input.GetKey(KeyCode.Z))
         {
-            Instantiate(bullet, FirePoint.transform.position, FirePoint.transform.rotation);
-        }
-    }
-
-    void OnCollisionEnter2D(Collision2D collision) 
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            isJump = false;
-            smoke.SetActive(false);
+            Instantiate(bullet, firePoint.transform.position, firePoint.transform.rotation);
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other) 
-    {
-        if(other.gameObject.tag == "Coin")
+    void OnCollisionEnter2D(Collision2D collision) {
+        
+        if(collision.gameObject.tag == "ground")
         {
+            isJumping = false;
+            smoke.SetActive(false); // Desativar fumaca do jetpack
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision) {
+        if(collision.gameObject.tag == "coin") {
             GameController.current.AddScore(5);
-            Destroy(other.gameObject);
+            Destroy(collision.gameObject);
         }
+
+        if(collision.gameObject.tag == "enemy") {
+            GameController.current.GameOverPanel.SetActive(true);
+            GameController.current.PlayerIsAlive = false; // Player morreu
+            Destroy(gameObject);
+        }
+    }
+
+    public void JumpBtn() {
+        if(!isJumping)
+        {
+            rig.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            isJumping = true;
+            smoke.SetActive(true); // Ativar fumaca do jetpack
+        }
+    }
+
+    public void FireBtn() {
+        Instantiate(bullet, firePoint.transform.position, firePoint.transform.rotation);
     }
 }
